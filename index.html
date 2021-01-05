@@ -1,0 +1,1981 @@
+
+
+<html>
+<head>
+
+
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+function eqpt_test(s)
+{
+
+var p=s.indexOf('/') ;
+
+if (p>0)
+{
+alert ("Automatic removal of / detected in EQUIPMENT field, please check!");
+document.fpl.SEQPT.value=s.substring(p+1);
+alert(s);
+document.fpl.CEQPT.value=s.substring(0,p);
+};
+}
+
+var err="";
+
+function messeges(mesaj)
+{
+alert("mesaj");
+}
+
+function test()
+{
+
+var A='(FPL-';
+var LF= '\n';
+var EROARE=false;
+B='';
+var S='';
+
+//IDENTIFICAREA AERONAVEI	
+
+var B=document.fpl.ARCID.value;
+	if (B.length <3) 
+	{
+
+	alert('AIRCRAFT ID IS MISSING!');
+	document.fpl.ARCID.focus();
+	return false;
+	}
+	else
+	{
+		A=A + B;
+		S='(SPL-' + B;
+		//alert(A);
+	}
+	
+//REGULI DE ZBOR
+
+B=document.fpl.FLTRUL.value;
+	if (document.fpl.FLTRUL.value=='_' || document.fpl.FLTRUL.value=='')
+	{
+		alert('FLIGHT RULES IS MISSING!');
+		document.fpl.FLTRUL.focus();
+		return false;
+	}	
+ 	else
+	{
+		A=A +"-" + B;
+		//alert(A);
+		
+	}	
+
+
+//TIPUL ZBORULUI
+	B=document.fpl.FLTTYP.value;
+
+	if (document.fpl.FLTTYP.value=='_' || document.fpl.FLTTYP.value=='')
+	{
+		alert('TYPE OF FLIGHT IS MISSING!');
+		document.fpl.FLTTYP.focus();
+		return false;
+	}
+	else
+	{
+	 A=A + B + "\n";
+//	 alert(A);
+	}
+
+//NUMAR AERONAVE
+
+	B=Trim(document.fpl.NBRAC.value);
+	A=A + "-" + B;
+//        alert(A);
+
+// TIPUL ZBORULUI
+	
+B=document.fpl.ARCTYP.value;
+
+	if(B.length<1)
+	{
+		alert('TYPE OF AIRCRAFT IS MISSING!');
+		document.fpl.ARCTYP.focus();
+		return false;
+	}
+	else
+	{
+		A=A + B;
+	//alert(A);	
+	}
+
+
+//'TURBULENTA
+        B=document.fpl.WKTRB.value;
+	if(document.fpl.WKTRB.value=='_'|| document.fpl.WKTRB.value=='')
+	 {
+	 	alert('WAKE TURBULENCE IS MISSING!');
+		document.fpl.WKTRB.focus();
+		return false;
+	 }
+	else
+	{
+		A=A +"/" + B; 
+       //  alert(A);		
+	}
+
+
+//DOTARE COMUNICATII
+
+var c_value = "";
+for (var i=0; i < document.fpl.EQPT.length; i++)
+   {
+   if (document.fpl.EQPT[i].checked)
+      {
+      c_value = c_value + document.fpl.EQPT[i].value;
+      }
+
+   }
+
+if(c_value.length<1)
+{
+   alert('EQPT IS MISSING! Expand field 10');
+  // document.fpl.EQPT._dSectionExpand('3');
+   return false;
+
+}
+else
+{
+//S=S + "R/" + c_value + " ";
+  A=A + "-" + c_value ;
+ // alert(A);   
+}
+
+//DOTARE SSR
+
+var c_value = "";
+for (var i=0; i < document.fpl.SEQPT.length; i++)
+   {
+   if (document.fpl.SEQPT[i].checked)
+      {
+      c_value = c_value + document.fpl.SEQPT[i].value;
+      }
+
+   }
+
+if(c_value.length<1)
+{
+   alert('SSREQPT IS MISSING! Expand field 10');
+  // document.fpl.EQPT._dSectionExpand('3');
+   return false;
+
+}
+else
+{
+//S=S + "R/" + c_value + " ";
+  A=A + "/" + c_value+LF;
+//  alert(A);   
+}
+
+//	'DEP AD
+	B=document.fpl.ADEP.value;
+	//	'DEP AD
+	B=document.fpl.ADEP.value;
+	if (document.fpl.ADEP.value.length != 4)
+	{
+		alert ('Please enter 4 letters in DEP AERODROME field!');
+		document.fpl.ADEP.focus();
+            	document.fpl.ADEP.select();
+		return false;
+	}
+		
+	else
+	{
+		A=A +"-" +  B ;
+		S=S +"-" +  B ;
+		if( B !="ZZZZ")
+		{		
+         		document.fpl.DEPZ.value='';
+		}
+		else
+		{
+		//alert ('Please fill in the DEP field, too!');
+		}
+	//	alert(A);
+	}
+	
+//	'EOBT
+	B=document.fpl.IOBT.value;
+	var a=document.fpl.IOBT.value;
+	if (a.length != 4)
+	{
+	 alert('Invalid IOBT');
+         document.fpl.IOBT.select();
+	 return false;
+	}
+	else
+	{
+		var c=parseInt(a.substr(0,2));
+		var d=parseInt(a.substr(-2,2));
+		if(isNaN(c) || isNaN(d) || (c <0) ||(c >23) || (d <0) || (d >59) )
+		{ 
+		alert('Invalid IOBT');
+		document.fpl.IOBT.select();
+		return false;
+		}
+		else
+		{
+		A=A + B +LF;
+ 		S=S + B +LF;
+		//alert(A);
+		}
+		
+       }
+		
+//	'SPEED
+	B=document.fpl.SPEED.value;
+	var a=document.fpl.SPEED.value;
+	if (a.length>=0)
+	{   
+		if( B.length<1)
+		{
+		alert('FLIGHT SPEED  IS MISSING!');
+		document.fpl.SPEED.focus();
+		return false;		
+		}	
+	   	else
+		{
+
+ 		b=a.charAt(0);
+		switch ( b) 
+		{
+		case 'N':
+		c=removegarbage(a.substr(1,a.length-1),'1234567890');
+		var cn=parseInt(c);
+		  if((c.length!=4)||(isNaN(cn)))
+		  {
+		alert('Please enter 4 numbers after N');
+		document.fpl.FLLEVEL.focus();
+		return false;
+		}
+		break;
+		case 'M':
+				c=removegarbage(a.substr(1,a.length-1),'1234567890');
+		var cn=parseInt(c);
+		if((c.length!=3)||(isNaN(cn)))
+		{
+		alert('Please enter 3 numbers after M');
+		document.fpl.SPEED.focus();
+		return false;
+		}
+		break;
+		case 'K':
+				c=removegarbage(a.substr(1,a.length-1),'1234567890');
+		var cn=parseInt(c);
+		if((c.length!=4)||(isNaN(cn)))
+		{
+		alert('Please enter 4 numbers after K');
+		document.fpl.SPEED.focus();
+		return false;
+		}
+		break;
+		default:
+		alert('First letter of SPEED must be one of N K M ');
+		document.fpl.SPEED.focus();
+		return false;
+		break;
+		}
+		  A=A +"-" + B; 
+ 		//  alert(A);
+		}
+	}	
+	
+//	'LEVEL
+	B=document.fpl.FLLEVEL.value;
+	
+	var a=document.fpl.FLLEVEL.value;
+	if (a.length>0)
+	{
+	
+		if( B.length<1)
+		{
+		alert('FLIGHT LEVEL  IS MISSING!');
+		document.fpl.FLLEVEL.focus();
+		return false;		
+		}
+		else
+		{
+		if (a !='VFR')
+		{
+		b=a.charAt(0);
+		switch ( b) 
+		{
+		case 'F':
+		c=removegarbage(a.substr(1,a.length-1),'1234567890');
+		var cn=parseInt(c);
+		 if((c.length!=3)||(isNaN(cn)))
+		 {
+		alert('Please enter 3 numbers after F');
+		document.fpl.FLLEVEL.focus();
+		return false;
+		}
+		break;
+		case 'A':
+		c=removegarbage(a.substr(1,a.length-1),'1234567890');
+		var cn=parseInt(c);
+		  if((c.length!=3)||(isNaN(cn)))
+		  {
+		alert('Please enter 3 numbers after A');
+		document.fpl.FLLEVEL.focus();
+		return false;
+		}
+		break;
+		case 'M':
+		c=removegarbage(a.substr(1,a.length-1),'1234567890');
+		var cn=parseInt(c);
+		  if((c.length!=4)||(isNaN(cn)))
+		  {
+		alert('Please enter 4 numbers after M');
+		document.fpl.FLLEVEL.focus();
+		return false;
+		}
+		break;
+		case 'S':
+		c=removegarbage(a.substr(1,a.length-1),'1234567890');
+		var cn=parseInt(c);
+		  if((c.length!=4)||(isNaN(cn)))
+		  {
+		alert('Please enter 4 numbers after S');
+		document.fpl.FLLEVEL.focus();
+		return false;
+		}
+		break;
+		default:
+		alert('First letter of LEVEL must be one of &quot;F A S M"');
+		document.fpl.FLLEVEL.focus();
+		return false;
+		break;
+		}
+		}
+		 A=Parse(A, B );
+	//	 alert(A);
+		}
+
+	}
+
+	
+	
+//	'ROUTE
+	B=document.fpl.ROUTE.value;
+	B=B.replace(LF,' ');
+	if( B.length<1)
+	{
+		alert('ROUTE IS MISSING!');
+		document.fpl.ROUTE.focus();
+		return false;
+		}
+	else
+	{
+		A=Parse(A,B);         //'+Chr(13) + Chr(10)
+	}
+
+
+//	'DEST AD
+	B=document.fpl.ADES.value;
+	
+	
+	if (document.fpl.ADES.value.length != 4)
+	{
+		alert ('Please enter 4 letters in DEST field!');
+		document.fpl.ADES.focus();
+            	document.fpl.ADES.select();
+		return false;
+	}
+		
+	else
+	{
+		A=A + LF +"-" +  B ;
+		S=S + "-" +  B ;
+		if( B !="ZZZZ")
+		{		
+         		document.fpl.DESTZ.value='';
+		}
+		else
+		{
+		//alert ('Please fill in the DEST field, too!');
+		}
+//		alert(A);
+	}
+	
+	
+
+
+	
+		
+	
+//	'EET
+	B=document.fpl.TTLEET.value;
+	if( B.length!=4)
+	{
+		alert('TOTAL EET IS MISSING!');
+		document.fpl.TTLEET.focus();
+		return false;
+	} else {
+		A=A + B ;
+		S=S + B ;
+//		alert(A);
+	}
+
+//	'ALTN1
+	B=document.fpl.ALTRNT1.value;
+		
+	C=document.fpl.ALTRNT2.value;
+
+var d=B+C;
+	if (d.length <1)
+	{
+		alert('ALTERNATE AERODROME IS MISSING!');
+		document.fpl.ALTRNT1.focus();
+		return false;
+	} 
+	else 
+	{
+		A=A +" " + B + " " + C + LF +"-";
+		S=S +" " + B + " " + C + LF +"-";
+		//alert(A);
+	//	if( B!="ZZZZ")
+		//{
+			//document.fpl.ALTNZ.value="";
+		//}
+		//if( C!="ZZZZ")
+		//{
+		//	document.fpl.ALTNZ.value="";
+		//}
+	}
+
+//STS modificat pentru 12.11.2012 radio button
+
+var c_value = "";
+for (var i=0; i < document.fpl.STS.length; i++)
+   {
+   if (document.fpl.STS[i].checked)
+      {
+      c_value = c_value + document.fpl.STS[i].value+ " " ;
+      }
+
+   }
+
+if(c_value.length>0)
+{
+ //S=S + "R/" + c_value + " ";
+ B="STS/" + c_value;
+ C=Parse(C,B);
+}
+
+// PBN
+var c_value = "";
+for (var i=0; i < document.fpl.PBN.length; i++)
+   {
+   if (document.fpl.PBN[i].checked)
+      {
+      c_value = c_value + document.fpl.PBN[i].value;
+      }
+
+   }
+
+if(c_value.length>0)
+{
+if(c_value.length>16)
+{
+   alert('Indication of RNAV and/or RNP capabilities.Include as many of the descriptors below, as apply to the flight,up to a maximum of 8 entries, i.e. a total of not more than 16 characters.');
+   return false;
+}
+else
+{
+ //S=S + "R/" + c_value + " ";
+ B="PBN/" + c_value;
+ C=Parse(C,B);
+}
+}
+
+
+//		'NAV
+	B=Trim(document.fpl.NAV.value);
+	if( B.length>0)
+	{
+		B="NAV/" + B;
+		C=Parse(C,B);
+	}
+
+
+//		'COM
+	B=Trim(document.fpl.COM.value);
+	if( B.length>0)
+	{
+		B="COM/" + B;
+		C=Parse(C,B);
+	}
+
+
+//		'DAT
+	B=Trim(document.fpl.DATZ.value);
+	if( B.length>0)
+	{
+		B="DAT/" + B;
+		C=Parse(C,B);
+	}
+
+//		'SUR
+	B=Trim(document.fpl.SUR.value);
+	if( B.length>0)
+	{
+		B="SUR/" + B;
+		C=Parse(C,B);
+	}
+//		'DEPZ
+	B=Trim(document.fpl.DEPZ.value);
+	if( (B.length <1) && (Trim(document.fpl.ADEP.value)=="ZZZZ"))
+{
+		alert('ZZZZ is inserted in Item 13, DEP/ must be completed in ITEM 18');
+		document.fpl.DEPZ.focus();
+		return false;
+
+}
+else( (B.length >0) && (Trim(document.fpl.ADEP.value)=="ZZZZ"))
+	{	
+		B="DEP/" + B;
+		C=Parse(C,B); 
+	}
+	
+//		'DESTZ
+	B=Trim(document.fpl.DESTZ.value);
+
+	if( (B.length <1) && (Trim(document.fpl.ADES.value)=="ZZZZ"))
+{
+		alert('ZZZZ is inserted in Item 16, DEST/ must be completed in ITEM 18');
+		document.fpl.DESTZ.focus();
+		return false;
+}
+	else ( (B.length>0) && (Trim(document.fpl.ADES.value)=="ZZZZ"))
+	{	
+		B="DEST/" + B;
+		C=Parse(C,B);
+	}
+
+//	'DOF
+	B=Trim(document.fpl.IOBD.value);
+	a=B;
+
+     if(a.length != 0)
+{
+	 if (a.length != 6)
+	{
+		alert('Invalid DOF:'+a);
+		return false;
+	}
+		
+	if( B.length==6)
+	{
+	       var y=parseInt(removegarbage(a.substr(0,1),'123456789')+a.substr(1,1));
+		var d=parseInt(removegarbage(a.substr(4,1),'123456789')+a.substr(5,1));
+		var m=parseInt(removegarbage(a.substr(2,1),'123456789')+a.substr(3,1));
+		//alert ('Y='+a.substr(0,2)+' M='+a.substr(2,2)+' d='+a.substr(4,2));
+		//alert ('Y='+y+' M='+m+' d='+d);
+		if(isNaN(y) || isNaN(m)|| isNaN(d))
+		{
+		 alert('Invalid DOF - aici');
+		 return false;
+		 }
+		y=y+2000;
+
+	        dat=new Date(y,m-1,d,0,0,0);
+          	dat.setYear(y);
+               // alert(dat);
+        	var an=dat.getYear();
+      	if (an <2000)
+	{
+	an=an+1900;
+	}
+	if ((dat.getDate() != d)||(dat.getMonth() != m-1)|| (an != y) ) 
+	{ 
+	  alert('Invalid DOF'+a);
+	  return false;
+	}	
+		
+		B="DOF/" + B;
+		C=Parse(C,B);
+		
+	}
+}
+else
+{
+  
+    var today = new Date();
+   var day = today.getDate();
+   var year = today.getYear() ;
+   var month = today.getMonth()+1 ;
+   var y=year.toString();
+   var m="0"+month.toString();
+   var d="0"+day.toString();
+
+    document.fpl.IOBD.value=y.substr(y.length-2,2)+m.substring(m.length-2,m.length)+d.substring(d.length-2,d.length);
+    B="DOF/" + document.fpl.IOBD.value;
+    C=Parse(C,B);
+}
+		
+//	'REG
+	B=Trim(document.fpl.REG.value);
+	if( B.length>0)
+	{
+		B="REG/" + B;		
+		C=Parse(C,B);
+	}
+
+
+//	'EET
+	B=Trim(document.fpl.EET.value);
+	if( B.length>0)
+	{
+		B="EET/" + B;
+		C=Parse(C,B);
+	}
+
+
+//		'SEL
+	B=Trim(document.fpl.SEL.value);
+	if( B.length>0)
+	{
+		B="SEL/" + B;
+		C=Parse(C,B);
+	}
+
+
+//		'TYP
+	B=Trim(document.fpl.TYPZ.value);
+	if( B.length>0)
+	{
+		B="TYP/" + B;		
+		C=Parse(C,B);
+	}
+
+//		'SSRCODE
+	B=Trim(document.fpl.SSRCODE.value);
+	if( B.length>0)
+	{
+		B="CODE/" + B;
+		C=Parse(C,B);
+	}
+//		'DLE
+	B=Trim(document.fpl.DLE.value);
+	if( B.length>0)
+	{
+		B="DLE/" + B;
+		C=Parse(C,B);
+	}
+
+
+//		'OPR
+	B=Trim(document.fpl.OPR.value);
+	if( B.length>0)
+	{
+		B="OPR/" + B	;
+		C=Parse(C,B);
+	}
+
+//		'ORGN
+	B=Trim(document.fpl.ORGN.value);
+	if( B.length>0)
+	{
+		B="ORGN/" + B	;
+		C=Parse(C,B);
+	}
+
+//		'PER
+	B=Trim(document.fpl.PER.value);
+	if( B.length>0)
+	{
+		B="PER/" + B;
+		C=Parse(C,B);
+	}
+//		'ALTNZ
+	B=Trim(document.fpl.ALTNZ.value);
+	//alert(B);
+
+
+if( (B.length<1)&& (Trim(document.fpl.ALTRNT1.value)=="ZZZZ") || (B.length<1)&& (Trim(document.fpl.ALTRNT2.value)=="ZZZZ"))
+{
+		alert('ZZZZ is inserted in Item 16, ALTN/ must be completed in ITEM 18');
+		document.fpl.ALTNZ.focus();
+		return false;
+}
+
+	else( (B.length>0)&& (Trim(document.fpl.ALTRNT1.value)=="ZZZZ") || (B.length>0)&& (Trim(document.fpl.ALTRNT2.value)=="ZZZZ"))
+	{
+		B="ALTN/" + B;
+		C=Parse(C,B);
+	}
+
+//		'RALTN
+	B=Trim(document.fpl.RALTN.value);
+	if( B.length>0)
+	{
+		B="RALTN/" + B;
+		C=Parse(C,B);
+	}
+
+//		'TALT
+	B=Trim(document.fpl.TALT.value);
+	if( B.length>0)
+	{
+		B="TALT/" + B;
+		C=Parse(C,B);
+	}
+//	'Rif(
+	B=Trim(document.fpl.RIF.value);
+	if( B.length>0)
+	{
+		B="RIF/" + B;
+		C=Parse(C,B);
+	}
+
+//	'RMK(
+	B=Trim(document.fpl.RMK.value);
+	if( B.length>0)
+	{
+		B="RMK/" + B;
+		C=Parse(C,B);
+	}
+
+	A=A + C+")" + LF;
+	S=S + C+ LF + "-";				
+       
+//         alert(A);
+//	 alert(S);     
+
+//pic	
+	B=document.fpl.PIC.value;
+	if( B.length<3)
+	{
+		alert('Please enter THE PILOT IN COMMAND NAME!');
+		document.fpl.PIC.focus();
+		return false;
+	}
+	
+//'telefon
+	B=document.fpl.PILOT_PHONE.value;
+	if( B.length<7)
+	{
+		alert('Please enter your mobile phone number!');
+		document.fpl.PILOT_PHONE.focus();
+		return false;
+	}
+	
+	
+//endurance	
+	B=document.fpl.ENDURANCE.value;
+	var a=document.fpl.ENDURANCE.value;
+	if( B.length!=4)
+	{
+		alert('Please enter ENDURANCE - HHMM!');
+		document.fpl.ENDURANCE.focus();
+		return false;
+	}
+	else
+	{
+	
+	    var c=parseInt(a.substr(0,2));
+	    var d=parseInt(a.substr(-2,2));
+	    if(isNaN(c) || isNaN(d) || (c <0) ||(c >23) || (d <0) || (d >59) )
+	    { 
+	     alert('Invalid ENDURANCE');
+	     document.fpl.IOBT.select();
+	     return false;
+	   }
+	  else
+	  {
+ 	   S=S + "E/"+B +" ";
+	   //alert(S);
+	  }
+	
+	}
+	
+	
+
+	
+//person on board	
+	B=document.fpl.PERSONBOARD.value;
+	if( B.length==0)
+	{
+		alert('Please enter PERSON ON BOARD!');
+		document.fpl.PERSONBOARD.focus();
+		return false;
+	}	
+	else
+	{
+	  S=S + "P/"+ B +" ";
+	}
+	
+
+//RADIO	
+var c_value = "";
+for (var i=0; i < document.fpl.UHF.length; i++)
+   {
+   if (!document.fpl.UHF[i].checked)
+      {
+      c_value = c_value + document.fpl.UHF[i].value ;
+      }
+
+   }
+
+if(c_value.length>0)
+{
+ S=S + "R/" + c_value + " ";
+
+
+}
+
+
+var c_value = "";
+for (var i=0; i < document.fpl.SURV_EQPT.length; i++)
+   {
+   if (!document.fpl.SURV_EQPT[i].checked)
+      {
+      c_value = c_value + document.fpl.SURV_EQPT[i].value ;
+      }
+
+   }
+
+if(c_value.length>0)
+{
+ S=S + "S/" + c_value + " ";
+
+}
+
+
+var c_value = "";
+for (var i=0; i < document.fpl.JACKETS.length; i++)
+   {
+   if (!document.fpl.JACKETS[i].checked)
+      {
+      c_value = c_value + document.fpl.JACKETS[i].value ;
+      }
+
+   }
+
+if(c_value.length>0)
+{
+ S=S + "J/" + c_value + " ";
+
+}
+
+
+//dinghies	
+	B=Trim(document.fpl.DINGHIES.value);
+	if( B.length>0)
+	{
+	 S=S + "D/"+ B + " " ;
+	}	
+	
+//capacity	
+	B=Trim(document.fpl.DINGH_CAPACITY.value);
+	if( B.length>0)
+	{
+	 S=S + B +" ";
+	}	
+	
+//capacity	
+	B=Trim(document.fpl.DINGH_COLOUR.value);
+	if( B.length>0)
+	{
+	 S=S + "C/"+B +LF;
+	}	
+
+
+	
+//aircraft colors and markings	
+	B=Trim(document.fpl.ACFT_COLOUR.value);
+	if( B.length==0)
+	{
+		alert('Please enter AIRCRAFT COLOR AND MARKINGS!');
+		document.fpl.ACFT_COLOUR.focus();
+		return false;
+	}	
+	else
+	{
+	  S=S + "A/"+ B +" ";
+	}
+//remarks	
+	B=Trim(document.fpl.REMARKS.value);
+	if( B.length>0)
+	{
+	 S=S + "NO/"+ B + LF;
+	}		
+
+       B=document.fpl.PIC.value;
+
+        S=S + "C/"+ B + ")"+LF;
+        
+var com=document.fpl.Comments.value +LF ;
+document.fpl.Comments.value=com;
+
+document.fpl.FPL.value=A;
+document.fpl.SPL.value=S;
+//alert(A);
+if (confirm('Do you want to submit the following message:\n' + A))
+{
+	document.fpl.Body.value=A;
+	return true;
+	}
+	else
+	{
+	return false;
+	}       
+	
+}
+
+
+
+function SpargeRind(A)
+{
+	var pz=1,b,c='',poz
+	pz=0;
+	b=A;
+	do
+	{
+	poz=b.indexOf(' ',pz);
+	if (poz  < 60)
+		{
+			pz=poz+1;
+		} else
+		{
+			c=c + b.substr(0,pz) + '\n';
+			b=b.substr(pz);
+			pz=0;
+		}
+	} while (poz > 0);
+	return c+b;
+}
+
+
+function Trim(a)
+{
+while (a.charAt(0)==' ')
+{
+a=a.substr(1);
+}
+return a;
+}
+/*Function PARSE(A As String,F As String) As String
+
+	Do 
+		POZ=Instr(PZ,A,Chr(10))
+		If POZ>0 Then 
+			PZ=POZ+1
+			B$=Left$(A,PZ-1)
+			C$=Mid$(A,PZ)
+		End If
+	Loop Until POZ=0
+	PARSE= Trim(B$ & SPARGERIND(C$ & " " & F$))
+	'If Len(C$)>60 Then
+	'	PARSE=A$ & Chr(13) & Chr(10) & F$
+	'Else
+	'	PARSE=A$ &" " & F$
+	'End If
+End Function */
+
+function Parse(a,f)
+{
+var b='',c,pz=0
+c=Trim(a);
+do 
+{
+	poz=a.indexOf('\n',pz);
+	if (poz>0)
+	{
+		pz=poz+1;
+		b=a.substr(0,pz);
+		c=a.substr(pz);
+	}
+} while (poz>0)
+return Trim(b + SpargeRind(c+' ' + f))
+}
+function setFocus() {
+      var loginForm = document.getElementById("_FPL");
+      if (loginForm) {
+        loginForm["ARCID"].focus();
+      }
+    }
+// -->
+</script>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+document._domino_target = "_self";
+function _doClick(v, o, t, h) {
+  var form = document._FPL;
+  if (form.onsubmit) {
+     var retVal = form.onsubmit();
+     if (typeof retVal == "boolean" && retVal == false)
+       return false;
+  }
+  var target = document._domino_target;
+  if (o.href != null) {
+    if (o.target != null)
+       target = o.target;
+  } else {
+    if (t != null)
+      target = t;
+  }
+  form.target = target;
+  form.__Click.value = v;
+  if (h != null)
+    form.action += h;
+  form.submit();
+  return false;
+}
+// -->
+</script>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+function removegarbage(s,g)
+{
+var t="";
+for (i=0;i<s.length;i++)
+{
+l=s.charAt(i);
+if (g.indexOf(l)>=0)
+	{
+	t=t+l;
+	}
+}
+
+return t;
+
+}
+function LTrim(a)
+{
+var b='';
+var c='';
+for (i=0;i<a.length;i++)
+{
+c=a.charAt(i);
+if (c!=' ')
+{
+return a.substr(i)
+}
+}
+return b;
+}
+function Trim(a)
+{
+while (a.charAt(0)==' ')
+{
+a=a.substr(1);
+}
+return a;
+}
+
+
+
+
+function explain(name, output, msg) {
+newwin = window.open('','','top=150,left=150,width=325,height=300');
+if (!newwin.opener) newwin.opener = self;
+with (newwin.document)
+{
+open();
+write('<html>');
+write('<body onLoad="document.form.box.focus()"><form name=form>' + msg + '<br>');
+write('<p>You may enter your ' + name + ' here and it will be copied into the form for you.');
+write('<p><center>' + name + ':  <input type=text name=box size=10 onKeyUp=' + output + '=this.value>');
+write('<p><input type=button value="Click to close when finished" onClick=window.close()>');
+write('</center></form></body></html>');
+close();
+   }
+}
+
+
+
+// -->
+</script>
+
+<script>
+<!-- 
+
+function notEmpty(elem, helperMsg, nextelem){
+ 
+	if(elem.value.length == 0){
+		alert(helperMsg);
+		elem.focus();
+		return false;
+	}
+	else
+	{
+	nextelem.focus();
+	return true;
+	}
+}
+
+function Empty(val,helperMsg)
+{
+ if(val=='')
+ alert(helperMsg);
+
+}
+
+function charLength(val,helperMsg, l)
+{
+ if(val.length<l)
+ {
+ alert(helperMsg);
+ return false;
+ }
+ return true;
+}
+
+
+function selected(elem, helperMsg)
+{
+
+var val=elem.options[elem.selectedIndex].text;
+alert(val);
+if( val == "_" )
+   alert('heplerMsg');
+	
+ 
+}
+-->
+</script>
+
+<div style="border-top-style:solid; border-top-width:2px; border-top-color:#72B0E6; padding-top:1px;
+         border-left-style:solid; border-left-width:2px; border-left-color:#72B0E6; padding-left:1px;">
+<div style="border-top-style:solid; border-top-width:1px; border-top-color:#72B0E6; padding-top:10px;
+         border-left-style:solid; border-left-width:1px; border-left-color:#72B0E6; padding-left:10px;">
+
+<script type = "text/javascript">
+// Tip Box Display, version 1.0
+// Bontrager Connection, LLC
+// http://www.willmaster.com/
+// -> Functions findPosX and findPosY by 
+//    Peter-Paul Koch & Alex Tingle at 
+//    http://www.quirksmode.org/js/findpos.html and 
+//    http://blog.firetree.net/2005/07/04/javascript-find-position/
+//
+// One customization:
+//
+// Specify the ID of the DIV or other container that is the tip box.
+
+var TipBoxID = "TipBox";
+
+// No other customizations required
+// // // // // // // // // // // //
+
+var tip_box_id;
+
+function findPosX(obj)
+{
+   var curleft = 0;
+   if(obj.offsetParent)
+   while(1) 
+   {
+      curleft += obj.offsetLeft;
+      if(!obj.offsetParent)
+         break;
+      obj = obj.offsetParent;
+   }
+   else if(obj.x)
+      curleft += obj.x;
+   return curleft;
+}
+
+function findPosY(obj)
+{
+   var curtop = 0;
+   if(obj.offsetParent)
+   while(1)
+   {
+      curtop += obj.offsetTop;
+      if(!obj.offsetParent)
+         break;
+      obj = obj.offsetParent;
+   }
+   else if(obj.y)
+      curtop += obj.y;
+   return curtop;
+}
+
+function DisplayTip(me,offX,offY,content) {
+   var tipO = me;
+   tip_box_id = document.getElementById(TipBoxID);
+   var x = findPosX(me);
+   var y = findPosY(me);
+   tip_box_id.style.left = String(parseInt(x + offX) + 'px');
+   tip_box_id.style.top = String(parseInt(y + offY) + 'px');
+   tip_box_id.innerHTML = content;
+   tip_box_id.style.display = "block";
+   tipO.onmouseout = HideTip;
+} // function DisplayTip()
+
+function HideTip() { tip_box_id.style.display = "none"; }
+</script>
+
+<div 
+   id="TipBox" 
+   style="
+      display:none;
+      position:absolute; 
+      font-size:12px;
+      font-weight:bold;
+      font-family:verdana;
+      border:#72B0E6 solid 1px;
+      padding:15px;
+      color:#1A80DB;
+      background-color:#FFFFFF;">
+</div>
+
+
+</head>
+<body text="#000000" bgcolor="#E0FFBF" defaultfocus='ARCID' onload="setFocus(); document.fpl.PERSONBOARD.value=1;document.fpl.ROUTE.value=''">
+<form  name="fpl" action="login.php?$action=Submit" method="POST" >
+<input type="hidden" name="__Click" value="0">
+<table width="100%" border="1">
+<tr valign="top">
+<td width="100%" bgcolor="#820040">
+<div align="center"><b><font size="4" color="#FFFFFF" face="Arial">F</font></b><b><font size="4" color="#FFFF00" face="Arial">LIGHT </font></b><b>
+<font size="4" color="#FFFFFF" face="Arial">PL</font></b><b><font size="4" color="#FFFF00" face="Arial">AN MESSAGE FORM</font></b></div></td></tr>
+</table>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+function _dSectionExpand(sec) {
+	 document.getElementById("cSec"+sec).style.display = "none";
+	 document.getElementById("xSec"+sec).style.display = "block";
+}
+function _dSectionCollapse(sec) {
+	 document.getElementById("xSec"+sec).style.display = "none";
+	 document.getElementById("cSec"+sec).style.display = "block";
+}
+// -->
+</script>
+
+<table width="100%" border="1">
+<tr valign="top">
+<td width="100%" bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<input name="MSG" type="hidden" value="1">
+<tr valign="top">
+<td width="35%" bgcolor="#EFEFEF">
+<div align="right" onmouseover="DisplayTip(this,0,50,'Item 7: Aircraft identification.<br>Enter one of the following:<br>Aircraft registration (e.g., N172B).<br>ICAO designator followed by the flight number <br>(e.g.,KLM511).<br>Call sign assigned by military authorities.')">
+<tt>
+<b>7 AIRCRAFT IDENT:</b></tt>
+
+<input name="ARCID" value="" id="ARCID" SIZE=11 MAXLENGTH=7 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/&quot;); var a=this.value; this.style.background='';" onfocus="this.style.background='#FFFF00';" ></div>
+
+</td>
+
+<td width="34%" bgcolor="#EFEFEF">
+<div align="right" ><tt
+onmouseover="DisplayTip(this,0,50,'INSERT one of the following letters to denote the category of flight rules with which the pilot intends to comply:<br>I if it is intended that the entire flight will be operated under the IFR<br>V if it is intended that the entire flight will be operated under the VFR<br>Y if the flight initially will be operated under the IFR,followed by one or more subsequent changes of flight rules<br>Z if the flight initially will be operated under the VFR, followed by one or more subsequent changes of flight rules<br>Specify in Item 15 the point or points at which a change of flight rules is planned.
+ ')">
+<b>8 FLIGHT RULES:</b></tt>
+<input name="%%Surrogate_FLTRUL"  type="hidden" value="1">
+<select name="FLTRUL" value= "" onblur="this.style.background=''; " onfocus="this.style.background='#FFFF00'">
+<option value=""></option>
+<option value="I">I
+<option value="V">V
+<option value="Y">Y
+<option value="Z">Z  </select>
+</div></td><td width="31%" bgcolor="#EFEFEF">
+<div align="right" onmouseover="DisplayTip(this,0,50,
+'INSERT one of the following letters to denote the type <br>of flight when so required by the appropriate ATS authority:<br>-S if scheduled Air Transport<br>-N if non-scheduled air transport operation<br>-G if general aviation<br>-M if military<br>-X if other than any of the defined categories above.<br>Specify status of a flight following the indicator STS in Item 18, or when necessary to denote<br>other reasons for specific handling by ATS, indicate the reason following the indicator RMK in Item 18.')">
+<tt><b>TYPE OF FLIGHT:</b></tt>
+<input name="%%Surrogate_FLTTYP" type="hidden" value="1">
+<select name="FLTTYP" onblur="this.style.background='';" onfocus="this.style.background='#FFFF00'">
+<option value=""></option>
+<option value="S">S
+<option value="N">N
+<option value="G">G
+<option value="M">M
+<option value="X">X</select>
+</div></td></tr>
+
+<tr valign="top"><td width="35%" bgcolor="#FFFFFF"><div align="right"
+onmouseover="DisplayTip(this,0,50,
+'INSERT the number of aircraft, if more than one. ')">
+<tt><b>9 NUMBER OF A/C: </b></tt>
+<input name="NBRAC" value="" SIZE=6 MAXLENGTH=2 onblur="this.value =removegarbage(this.value ,&quot;1234567890&quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></div></td>
+<td width="34%" bgcolor="#FFFFFF"><div align="right"
+onmouseover="DisplayTip(this,0,50,
+'INSERT the appropriate designator as specified in <br>ICAO Doc 8643, Aircraft Type Designators,OR,<br>if no such designator has been assigned, or in case <br>of formation flights comprising more than one type,<br>INSERT ZZZZ, and SPECIFY in Item 18, <br>the number(s) and type(s) of aircraft preceded by TYP/.'
+)"
+
+><tt><b>TYPE OF AIRCRAFT</b></tt></a><tt><b>:</b></tt>
+<input name="ARCTYP" value="" SIZE=6 maxlength=4 onblur="var a=this.value; a = a.toUpperCase(); this.value=removegarbage(a,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890&quot;);
+this.style.background=''; " onfocus="this.style.background='#FFFF00'" id="ARCTYP"></div></td>
+<td width="31%" bgcolor="#FFFFFF"><div align="right"
+onmouseover="DisplayTip(this,0,50,
+'INSERT one of the following letters to indicate <br>the wake turbulence category of the aircraft:<br>-H - HEAVY;<br>-M - MEDIUM;<br>-L - LIGHT.')"
+
+><tt><b>WAKE TURB CAT:</b></tt>
+<input name="%%Surrogate_WKTRB" type="hidden" value="1">
+<select name="WKTRB" onblur="this.style.background='';this.style.background='';" onfocus="this.style.background='#FFFF00'">
+<option value=""></option>
+<option value="L">L
+<option value="M">M
+<option value="H">H
+<option value="J">J</select>
+</div></td></tr>
+
+
+
+
+<tr valign="top"><td width="100%" bgcolor="#EFEFEF" colspan="3">
+
+<!--
+<input name="CEQPT" value="" SIZE=8 maxlength=10 onblur="this.value = this.value.toUpperCase(); eqpt_test(this.value);this.value=removegarbage(this.value,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;);
+this.style.background='';" onfocus="this.style.background='#FFFF00'"><tt><b>/</b></tt>
+<input name="SEQPT" value="" SIZE=6 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></div></td>
+-->
+<div id="cSec3"><a onclick="return _dSectionExpand('3');"><img src="images/expand.gif" border="0" alt="Show details for 10 EQUIPMENT AND CAPABILITIES:">
+<tt onmouseover="DisplayTip(this,0,50,'Radio communication, navigation and approach aid equipment and capabilities.<br>INSERT one letter as follows:<br>N if no COM/NAV/approach aid equipment for the route to be flown is carried, or equipment is unserviceable,<br>OR<br>S if standard COM/NAV/approach aid equipment for the route to be flown is carried and serviceable (see Note 1),<br>AND/OR<br>INSERT one or more of the following letters to indicate the serviceable COM/NAV/approach aid equipment and capabilities available:<br>A GBAS landing system; B LPV (APV with SBAS); C LORAN C; D DME; E1 FMC WPR ACARS; E2 D-FIS ACARS; E3 PDC ACARS; F ADF<br>G (GNSS) (See Note 2); H HF RTF; I Inertial Navigation; J1 CPDLC ATN VDL Mode 2(See Note 3); J2 CPDLC FANS 1/A HFDL; J3 CPDLC FANS 1/A VDL Mode A;<br>J4 CPDLC FANS 1/A VDL Mode 2; J5 CPDLC FANS 1/A SATCOM (INMARSAT); J6 CPDLC FANS 1/A SATCOM (MTSAT); J7 CPDLC FANS 1/A SATCOM (Iridium)<br>K (MLS); L ILS; M1 ATC RTF SATCOM (INMARSAT); M2 ATC RTF (MTSAT); M3 ATC RTF (Iridium); O VOR; P1-P9 Reserved for RCP; R PBN approved (see Note 4); T TACAN<br>U UHF RTF; V VHF RTF; W RVSM approved; X MNPS approved; Y VHF with 8.33 kHz channel spacing capability; Z Other equipment carried or other capabilities (see Note 5)<br>Any alphanumeric characters not indicated above are reserved.<br>Note 1. If the letter S is used, standard equipment is considered to be VHF RTF,VOR and ILS, unless another combination is prescribed by the appropriate ATS authority.<br>Note 2.If the letter G is used, the types of external GNSS augmentation, if any, are specified in Item 18 following the indicator NAV/ and separated by a space.<br>Note 3. See RTCA/EUROCAE Interoperability Requirements Standard For ATN Baseline 1 (ATN B1 INTEROP Standard - DO-280B/ED-110B) for data link services air traffic control clearance and information/air traffic control communications management/air traffic control microphone check.<br>Note 4. If the letter R is used, the performance based navigation levels that can be met are specified in Item 18 following the indicator PBN/. Guidance material on the application of performance based navigation to a specific route segment, route area is contained in the Performance-Based Navigation Manual (Doc 9613).<br>Note 5. If the letter Z is used, specify in Item 18 the other equipment carried or other capabilities,preceded by COM/, NAV/ and/or DAT, as appropriate.<br>Note 6.Information on navigation capability is provided to ATC for clearance and routing purposes.<br>Surveillance equipment and capabilities<br>INSERT N if no surveillance equipment for the route to be flown is carried, or the equipment is unserviceable,<br>OR<br>INSERT one or more of the following descriptors, to a maximum of 20 characters, to describe the serviceable surveillance equipment and/or capabilities on board:<br>SSR Modes A and C<br>A Transponder - Mode A (4 digits-4096 codes); C Transponder - Mode A (4 digits-4 096 codes) and Mode C<br>SSR Mode S<br>E Transponder - Mode S, including aircraft identification, pressure-altitude and extended squitter (ADS-B) capability<br>H Transponder - Mode S, including aircraft identification, pressure-altitude and enhanced surveillance capability<br>I Transponder - Mode S, including aircraft identification, but no pressure-altitude capability<br>L Transponder - Mode S, including aircraft identification, pressure-altitude, extended squitter (ADS-B) and enhanced surveillance capability<br>P Transponder - Mode S, including pressure-altitude, but no aircraft identification capability<br>S Transponder - Mode S, including both pressure altitude and aircraft identification capability<br>X Transponder - Mode S with neither aircraft identification nor pressure-altitude capability<br>Note.- Enhanced surveillance capability is the ability of the aircraft to down-link aircraft derived data via a Mode S transponder.<br>ADS-B<br>B1 ADS-B with dedicated 1090 MHz ADS-B out capability; B2 ADB-B with dedicated 1090 MHz ADS-B out and in capability<br>U1 ADS-B out capability using UAT; U2 ADS-B out and âinâ capability using UAT<br>V1 ADS-B out capability using VDL Mode 4; V2 ADS-B out and in capability using VDL Mode 4<br>ADS-C<br>D1 ADS-C with FANS 1/A capabilities; G1 ADS-C with ATN capabilities<br>Alphanumeric characters not indicated above are reserved. <br>Example:ADE3RV/HB2U2V2G1<br>Note. Additional surveillance application should be listed in Item 18 following the indicator SUR/..')"
+><b><font color="#800000">10 EQUIPMENT AND CAPABILITIES</font></b></tt></a></div>
+<div id="xSec3"><a onclick="return _dSectionCollapse('3');">
+<img src="images/collapse.gif" border="0" alt="Hide details for 10 EQUIPMENT AND CAPABILITIES"><b><font color="#800000">
+<tt onmouseover="DisplayTip(this,0,50,'Radio communication, navigation and approach aid equipment and capabilities.<br>INSERT one letter as follows:<br>N if no COM/NAV/approach aid equipment for the route to be flown is carried, or equipment is unserviceable,<br>OR<br>S if standard COM/NAV/approach aid equipment for the route to be flown is carried and serviceable (see Note 1),<br>AND/OR<br>INSERT one or more of the following letters to indicate the serviceable COM/NAV/approach aid equipment and capabilities available:<br>A GBAS landing system; B LPV (APV with SBAS); C LORAN C; D DME; E1 FMC WPR ACARS; E2 D-FIS ACARS; E3 PDC ACARS; F ADF<br>G (GNSS) (See Note 2); H HF RTF; I Inertial Navigation; J1 CPDLC ATN VDL Mode 2(See Note 3); J2 CPDLC FANS 1/A HFDL; J3 CPDLC FANS 1/A VDL Mode A;<br>J4 CPDLC FANS 1/A VDL Mode 2; J5 CPDLC FANS 1/A SATCOM (INMARSAT); J6 CPDLC FANS 1/A SATCOM (MTSAT); J7 CPDLC FANS 1/A SATCOM (Iridium)<br>K (MLS); L ILS; M1 ATC RTF SATCOM (INMARSAT); M2 ATC RTF (MTSAT); M3 ATC RTF (Iridium); O VOR; P1-P9 Reserved for RCP; R PBN approved (see Note 4); T TACAN<br>U UHF RTF; V VHF RTF; W RVSM approved; X MNPS approved; Y VHF with 8.33 kHz channel spacing capability; Z Other equipment carried or other capabilities (see Note 5)<br>Any alphanumeric characters not indicated above are reserved.<br>Note 1. If the letter S is used, standard equipment is considered to be VHF RTF,VOR and ILS, unless another combination is prescribed by the appropriate ATS authority.<br>Note 2.If the letter G is used, the types of external GNSS augmentation, if any, are specified in Item 18 following the indicator NAV/ and separated by a space.<br>Note 3. See RTCA/EUROCAE Interoperability Requirements Standard For ATN Baseline 1 (ATN B1 INTEROP Standard - DO-280B/ED-110B) for data link services air traffic control clearance and information/air traffic control communications management/air traffic control microphone check.<br>Note 4. If the letter R is used, the performance based navigation levels that can be met are specified in Item 18 following the indicator PBN/. Guidance material on the application of performance based navigation to a specific route segment, route area is contained in the Performance-Based Navigation Manual (Doc 9613).<br>Note 5. If the letter Z is used, specify in Item 18 the other equipment carried or other capabilities,preceded by COM/, NAV/ and/or DAT, as appropriate.<br>Note 6.Information on navigation capability is provided to ATC for clearance and routing purposes.<br>Surveillance equipment and capabilities<br>INSERT N if no surveillance equipment for the route to be flown is carried, or the equipment is unserviceable,<br>OR<br>INSERT one or more of the following descriptors, to a maximum of 20 characters, to describe the serviceable surveillance equipment and/or capabilities on board:<br>SSR Modes A and C<br>A Transponder - Mode A (4 digits-4096 codes); C Transponder - Mode A (4 digits-4 096 codes) and Mode C<br>SSR Mode S<br>E Transponder - Mode S, including aircraft identification, pressure-altitude and extended squitter (ADS-B) capability<br>H Transponder - Mode S, including aircraft identification, pressure-altitude and enhanced surveillance capability<br>I Transponder - Mode S, including aircraft identification, but no pressure-altitude capability<br>L Transponder - Mode S, including aircraft identification, pressure-altitude, extended squitter (ADS-B) and enhanced surveillance capability<br>P Transponder - Mode S, including pressure-altitude, but no aircraft identification capability<br>S Transponder - Mode S, including both pressure altitude and aircraft identification capability<br>X Transponder - Mode S with neither aircraft identification nor pressure-altitude capability<br>Note.- Enhanced surveillance capability is the ability of the aircraft to down-link aircraft derived data via a Mode S transponder.<br>ADS-B<br>B1 ADS-B with dedicated 1090 MHz ADS-B out capability; B2 ADB-B with dedicated 1090 MHz ADS-B out and in capability<br>U1 ADS-B out capability using UAT; U2 ADS-B out and âinâ capability using UAT<br>V1 ADS-B out capability using VDL Mode 4; V2 ADS-B out and in capability using VDL Mode 4<br>ADS-C<br>D1 ADS-C with FANS 1/A capabilities; G1 ADS-C with ATN capabilities<br>Alphanumeric characters not indicated above are reserved. <br>Example:ADE3RV/HB2U2V2G1<br>Note. Additional surveillance application should be listed in Item 18 following the indicator SUR/.')"
+>10 EQUIPMENT AND CAPABILITIES</tt></font></b></a>
+<table>
+<tr>
+<td><u>EQUIPMENT</u>
+</td>
+<td><u>CAPABILITIES</u>
+</td>
+</tr>
+<tr><td><font size="2">
+<input name="%%Surrogate_EQPT" type="hidden" value="1">
+	<input type="checkbox" name="EQPT" value="N" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">N-if no COM/NAV/approach aid equipment for the route to be flown is carried, or the equipment is unserviceable<br>
+	<input type="checkbox" name="EQPT" value="S" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">S-if standard COM/NAVapproach aid equipment for the route to be flown is carried and serviceable<br>
+	<input type="checkbox" name="EQPT" value="A" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">A-GBAS landing system<br>
+	<input type="checkbox" name="EQPT" value="B" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B-LPV (APV with SBAS)<br>
+	<input type="checkbox" name="EQPT" value="C" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">C-LORAN C<br>
+	<input type="checkbox" name="EQPT" value="D" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">D-DME<br>
+	<input type="checkbox" name="EQPT" value="E1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">E1-FMC WPR ACARS<br>
+	<input type="checkbox" name="EQPT" value="E2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">E2-D-FIS ACARS<br>
+	<input type="checkbox" name="EQPT" value="E3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">E3-PDC ACARS<br>
+	<input type="checkbox" name="EQPT" value="F" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">F-ADF<br>
+	<input type="checkbox" name="EQPT" value="G" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">G-GNSS<br>
+	<input type="checkbox" name="EQPT" value="H" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">H-HF RTF<br>
+	<input type="checkbox" name="EQPT" value="I" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">I-Inertial Navigation<br>
+	<input type="checkbox" name="EQPT" value="J1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">J1-CPDLC ATN VDL Mode 2<br>
+	<input type="checkbox" name="EQPT" value="J2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">J2-CPDLC FANS 1/A HFDL<br>
+	<input type="checkbox" name="EQPT" value="J3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">J3-CPDLC FANS 1/A VDL Mode A<br>
+	<input type="checkbox" name="EQPT" value="J4" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">J4-CPDLC FANS 1/A VDL Mode 2<br>
+	<input type="checkbox" name="EQPT" value="J5" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">J5-CPDLC FANS 1/A SATCOM (INMARSAT)<br>
+	<input type="checkbox" name="EQPT" value="J6" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">J6-CPDLC FANS 1/A SATCOM (MTSAT)<br>
+        <input type="checkbox" name="EQPT" value="J7" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">J7-CPDLC FANS 1/A SATCOM (Iridium)<br>
+	<input type="checkbox" name="EQPT" value="K" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">K-MLS<br>
+	<input type="checkbox" name="EQPT" value="L" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">L-ILS<br>
+	<input type="checkbox" name="EQPT" value="M1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">M1-ATC RTF SATCOM (INMARSAT)<br>
+	<input type="checkbox" name="EQPT" value="M2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">M2-ATC RTF (MTSAT)<br>
+	<input type="checkbox" name="EQPT" value="M3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">M3-ATC RTF (Iridium)<br>
+	<input type="checkbox" name="EQPT" value="O" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">O-VOR<br>
+	<input type="checkbox" name="EQPT" value="P1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P1-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="P2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P2-Reserved for RCP<br>
+        <input type="checkbox" name="EQPT" value="P3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P3-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="P4" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P4-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="P5" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P5-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="P6" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P6-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="P7" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P7-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="P8" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P8-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="P9" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P9-Reserved for RCP<br>
+	<input type="checkbox" name="EQPT" value="R" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">R-PBN Approved<br>
+	<input type="checkbox" name="EQPT" value="T" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">T-TACAN<br>
+	<input type="checkbox" name="EQPT" value="U" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">U-UHF RTF<br>
+	<input type="checkbox" name="EQPT" value="V" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">V-VHF RTF<br>
+	<input type="checkbox" name="EQPT" value="W" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">W-RVSM Approved<br>
+	<input type="checkbox" name="EQPT" value="X" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">X-MNPS Approved<br>
+	<input type="checkbox" name="EQPT" value="Y" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">Y-VHF with 8.33 kHz channel spacing capability<br>
+	<input type="checkbox" name="EQPT" value="Z" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">Z-Other equipment carried or other capabilities<br>
+	
+</FONT></td>
+<td ><font size="2">
+<input name="%%Surrogate_STS" type="hidden" value="1">
+	<input type="checkbox" name="SEQPT" value="N" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">N-if no surveillence equipment for the route to be flown is carried, or the equipment is unserviceable<br>
+	<input type="checkbox" name="SEQPT" value="A" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">A-Transponder - Mode A (4 digits-4096 codes)<br>
+	<input type="checkbox" name="SEQPT" value="C" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">C-Transponder - Mode A (4 digits-4 096 codes) and Mode C<br>
+	<input type="checkbox" name="SEQPT" value="E" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">E-Transponder - Mode S, including aircraft identification, pressure-altitude and extended squitter (ADS-B) capability<br>
+	<input type="checkbox" name="SEQPT" value="H" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">H-Transponder - Mode S, including aircraft identification, pressure-altitude and enhanced surveillance capability<br>
+	<input type="checkbox" name="SEQPT" value="I" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">I-Transponder - Mode S, including aircraft identification, but no pressure-altitude capability<br>
+	<input type="checkbox" name="SEQPT" value="L" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">L-Transponder - Mode S, including aircraft identification, pressure-altitude, extended squitter (ADS-B) and enhanced surveillance capability<br>
+	<input type="checkbox" name="SEQPT" value="P" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">P-Transponder - Mode S, including pressure-altitude, but no aircraft identification capability<br>
+	<input type="checkbox" name="SEQPT" value="S" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">S-Transponder - Mode S, including both pressure altitude and aircraft identification capability<br>
+	<input type="checkbox" name="SEQPT" value="X" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">X-Transponder - Mode S with neither aircraft identification nor pressure-altitude capability<br>
+	<input type="checkbox" name="SEQPT" value="B1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B1-ADS-B with dedicated 1090 MHz ADS-B out capability<br>
+	<input type="checkbox" name="SEQPT" value="B2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B2-ADB-B with dedicated 1090 MHz ADS-B "out" and "in" capability<br>
+	<input type="checkbox" name="SEQPT" value="U1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">U1-ADS-B "out" capability using UAT<br>
+	<input type="checkbox" name="SEQPT" value="U2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">U2-ADS-B "out" and âinâ capability using UAT<br>
+	<input type="checkbox" name="SEQPT" value="V1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">V1-ADS-B "out" capability using VDL Mode 4<br>
+	<input type="checkbox" name="SEQPT" value="V2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">V2-ADS-B "out" and "in" capability using VDL Mode 4<br>
+	<input type="checkbox" name="SEQPT" value="D1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">D1-ADS-C with FANS 1/A capabilities<br>
+	<input type="checkbox" name="SEQPT" value="G1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">G1-ADS-C with ATN capabilities<br>
+</FONT></td>
+</tr>
+</table>
+
+</div>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+//_dSectionExpand('3');
+_dSectionCollapse('3');
+-->
+</script>
+
+</tr>
+<tr valign="top">
+<td width="34%" bgcolor="#FFFFFF"><div align="right"
+onmouseover="DisplayTip(this,0,50,
+'Insert the ICAO four letter location <br>identifier of the departure aerodrome, <br>or if no location assigned, <br>insert ZZZZ  and specify in item other information, <br>the name of the aerodrome')"
+><tt><b>13 DEP AERODROME:</b></tt>
+<input name="ADEP" value="" SIZE=6 maxlength=4 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;);this.value=maxchar(this.value);
+
+this.style.background='';" onfocus="this.style.background='#FFFF00';"></div></td><td width="31%" bgcolor="#FFFFFF"><div align="right"
+onmouseover="DisplayTip(this,0,50,
+'Insert estimated off-block time')"
+><tt><b>TIME:</b></tt>
+<input name="IOBT" value="" SIZE=6 MAXLENGTH=4 onblur="this.value =removegarbage(this.value ,&quot;1234567890&quot;);
+this.style.background='';" onfocus="this.style.background='#FFFF00'"></div></td></tr>
+
+<tr valign="top">
+<td width="35%" bgcolor="#EFEFEF"><div align="right" onmouseover="DisplayTip(this,0,50, 'Insert the first cruising speed as the True Airspeed <br>for the first or whole portion of the flight, in terms of:<br>*Kilometres per hour, expressed as K followed by 4 figures (e.g. K0350)<br>*Knots, expressed as N,followed by 4 figures (e.g. N0220)<br>*Mach Number , when so prescribed by the appropriate ATS authority <br>to the nearest hundredths of unit mach, expressed as M followed by <br>3 figures (e.g. M072)')"
+><tt><b>15 CRUISING SPEED:</b></tt>
+<input name="SPEED" value="" SIZE=6 onblur="a = Trim(this.value.toUpperCase());
+a=removegarbage(a,'1234567890KNM');this.value=a; this.style.background='';" onfocus="this.style.background='#FFFF00'"></div></td>
+<td width="35%" bgcolor="#EFEFEF"><div align="right" onmouseover="DisplayTip(this,0,50,'Cruising Level ( maximum 5 characters )<br>Insert the planned cruising level for the first or <br>the whole cruising portion of the route to be flown, in terms of:<br>Flight Level - F followed by 3 figures(e.g.F085)<br>Altitude in hundreds of feed - A followed by 3 figures (e.g. A015)<br>Standard Metric level in tens of metres - S followed by 4 figures (e.g. S1130 )(**)<br>Altitude in tens of metres - M followed by 4 figures(e.g.M8040) (**)<br>or, for VFR flights where the flight is not planned to be <br>flown at a specific cruising level, the letters VFR.<br>(**) When so prescribed by the appropriate authorities.')"><tt><b>LEVEL:</b></tt>
+<input name="FLLEVEL" value="" SIZE=6 onblur="a = Trim(this.value.toUpperCase());
+a=removegarbage(a,'1234567890FSAMVR');
+this.value=a; this.style.background='';" onfocus="this.style.background='#FFFF00'"></div></td>
+<td width="31%" bgcolor="#EFEFEF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td></tr>
+
+<tr valign="top">
+<td width="100%" bgcolor="#FFFFFF" colspan="3">
+<tt onmouseover="DisplayTip(this,0,50,
+'Route including changes of speed, level an/or flight rules.<br>( note that is an abbreviated instruction).<br>Flight along designated ATS routes:<br>Insert the designator of the first route, <br>or the letters DCT followed by the point of joining the route.<br>Then insert  each point at which a change of route, <br>speed or flight rules is planned, followed <br>by the designator of the next route segment.<br>Flight outside designated routes:<br>Points not normally more than 30 minutes flying time,<br>or 200 nm apart, including each point where a change of speed,<br>level, track or flight rules is planned.'
+)"><b>ROUTE:</b></tt><br>
+<tt><b><font color="#0000ff">
+<textarea name="ROUTE" cols=80 ROWS=4  onblur="var a= this.value.toUpperCase();
+this.value=removegarbage(a,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890/ &quot; + &quot;\n&quot;)
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></textarea>
+<input type=hidden name="FPL" value=>
+<input type=hidden name="SPL" value=>
+</font></b></tt></td></tr>
+
+<tr valign="top">
+<td width="35%" bgcolor="#EFEFEF"><tt
+ onmouseover="DisplayTip(this,0,50,
+'Destination Aerodrome and estimated elapsed time (8 characters)<br>Insert the ICAO four letter location indicator <br>of the destination aerodrome followed by the <br>total estimated elapsed time, or if no designator<br>has been assigned, insert ZZZZ followed by the EET <br>and specify in item other information the name of <br>the aerodrome preceded by DEST/'
+)"><b>16 DEST. AERODROME:</b></tt>
+<input name="ADES" value="" SIZE=6 maxlength=4 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;);
+
+this.style.background='';check(this.name);" onfocus="this.style.background='#FFFF00';"></td>
+<td width="34%" bgcolor="#EFEFEF"><tt onmouseover="DisplayTip(this,0,50,'')">
+<b>TOTAL EET:</b></tt>
+<input name="TTLEET" value="" SIZE=6 MAXLENGTH=4 onblur="this.value =removegarbage(this.value ,&quot;1234567890&quot;);
+this.style.background='';check(this.name);" onfocus="this.style.background='#FFFF00'"></td>
+<td width="31%" bgcolor="#EFEFEF"><tt onmouseover="DisplayTip(this,0,50,'Insert the ICAO four letter location indicator of alternate aerodrome or, <br>if no designator has been assigned, <br>insert ZZZZ and specify in item other information the <br>name of the aerodrome preceded by ALTN/')"><b>ALTN AD:</b></tt>
+<input name="ALTRNT1" value="" SIZE=6 maxlength=4 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;);this.style.background='';check(this.name);" onfocus="this.style.background='#FFFF00'"><tt><b>&nbsp;</b></tt>
+<input name="ALTRNT2" value="" SIZE=6 maxlength=4 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;);
+this.style.background='';check(this_name);" onfocus="this.style.background='#FFFF00'"></td></tr>
+</table>
+</td></tr>
+</table>
+
+<div id="cSec1"><a onclick="return _dSectionExpand('1');"><img src="images/expand.gif" border="0" alt="Show details for 18 OTHER INFORMATION">
+<tt onmouseover="DisplayTip(this,0,50,
+'Insert 0 (zero) if no other information, <br>or, any other necessary information <br>in the preferred sequence shown below,<br>in the form of an appropriate indicator <br>followed by an oblique stroke and <br>the information to be recorded.')"
+><b><font color="#800000">18 OTHER INFORMATION</font></b></tt></a></div>
+<div id="xSec1"><a onclick="return _dSectionCollapse('1');">
+<img src="images/collapse.gif" border="0" alt="Hide details for 18 OTHER INFORMATION"><b><font color="#800000">
+<tt onmouseover="DisplayTip(this,0,50,
+'Insert 0 (zero) if no other information, <br>or, any other necessary information <br>in the preferred sequence shown below,<br>in the form of an appropriate indicator <br>followed by an oblique stroke and <br>the information to be recorded.')"
+>18 OTHER INFORMATION</tt></font></b></a>
+<table width="100%" border="1">
+<tr valign="top">
+<td width="50%" bgcolor="#EFEFEF">
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
+<tr valign="top">
+<td colspan=2>
+<div id="cSec4"><a onclick="return _dSectionExpand('4');"><img src="images/expand.gif" border="0" alt="Show details for STS">
+<tt onmouseover="DisplayTip(this,0,50,'STS/Reasons for special handling<br>STS/ATFM EXEMPT APPROVED<br>STS/EMER Flights engaged in emergency missions(***)<br>STS/EXM833 State aircraft, not equipped with 8.33 kHz channel spacing radio equipment prescribed for an area<br>STS/HEAD Flights with Heads of States<br>STS/HOSP Flights with sick or injured persons needing immediate medical assistance, including flights urgently <br> required for life-saving medical care of sick or injured persons. This comprises both flights for the <br>transport of transplants, stored blood and medicine and flights to be conducted to pick up a patient, transplants, <br> stored blood or medicine at the destination place.<br>STS/HUM Flights operating for humanitarian reasons<br>STS/NIL Replaces all other STS/entries. Only to be used when reporting flight plan changes.<br>STS/NONRNAV State aircraft, not equipped with type RNP prescribed for a route segment, a routing and/or an area<br>STS/NONRVSM State aircraft without RVSM permission.<br>STS/PROTECTED Flights critical to safety, the flight plan of which is only to be made available to a limited circle of recipients.<br>STS/RNAVINOP For aircraft, the RNAV equipment of which is inoperable at short notice or no longer complies with the required <br>minimum conditions<br>STS/SAR Flights engaged in Search and Rescue missions(***)<br>STS/STATE Government flights<br>(***) Leads to an automatic exemption from ATFM restrictions.'
+)">
+<b>STS/</b></tt></div>
+<div id="xSec4"><a onclick="return _dSectionCollapse('4');">
+<img src="images/collapse.gif" border="0" alt="Hide details for STS"><b><font color="#800000">
+<tt onmouseover="DisplayTip(this,0,50,'STS/Reasons for special handling<br>STS/ATFM EXEMPT APPROVED<br>STS/EMER Flights engaged in emergency missions(***)<br>STS/EXM833 State aircraft, not equipped with 8.33 kHz channel spacing radio equipment prescribed for an area<br>STS/HEAD Flights with Heads of States<br>STS/HOSP Flights with sick or injured persons needing immediate medical assistance, including flights urgently <br> required for life-saving medical care of sick or injured persons. This comprises both flights for the <br>transport of transplants, stored blood and medicine and flights to be conducted to pick up a patient, transplants, <br> stored blood or medicine at the destination place.<br>STS/HUM Flights operating for humanitarian reasons<br>STS/NIL Replaces all other STS/entries. Only to be used when reporting flight plan changes.<br>STS/NONRNAV State aircraft, not equipped with type RNP prescribed for a route segment, a routing and/or an area<br>STS/NONRVSM State aircraft without RVSM permission.<br>STS/PROTECTED Flights critical to safety, the flight plan of which is only to be made available to a limited circle of recipients.<br>STS/RNAVINOP For aircraft, the RNAV equipment of which is inoperable at short notice or no longer complies with the required <br>minimum conditions<br>STS/SAR Flights engaged in Search and Rescue missions(***)<br>STS/STATE Government flights<br>(***) Leads to an automatic exemption from ATFM restrictions.'
+)">
+<b>STS/</b></tt></a>
+<table>
+<tr>
+<td><font size="2">
+<input name="%%Surrogate_STS" type="hidden" value="1">
+	<input type="checkbox" name="STS" value="ALTRV" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">ALTRV<br>
+	<input type="checkbox" name="STS" value="ATFMX" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">ATFMX<BR>
+	<input type="checkbox" name="STS" value="FFR" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">FFR<br>
+	<input type="checkbox" name="STS" value="FLTCK" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">FLTCK<br>
+	<input type="checkbox" name="STS" value="HAZMAT" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">HAZMAT<BR>
+	<input type="checkbox" name="STS" value="HEAD" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">HEAD<BR>
+	<input type="checkbox" name="STS" value="HOSP" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">HOSP<BR>
+	<input type="checkbox" name="STS" value="HUM" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">HUM<br>
+	<input type="checkbox" name="STS" value="MARSA" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">MARSA<br>
+	<input type="checkbox" name="STS" value="MEDEVAC" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">MEDEVAC<BR>
+	<input type="checkbox" name="STS" value="NONRVSM" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">NONRVSM<br>
+	<input type="checkbox" name="STS" value="SAR" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">SAR<BR>
+	<input type="checkbox" name="STS" value="STATE" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">STATE<br>
+</FONT></td>
+</tr>
+</table>
+</td>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+//_dSectionExpand('3');
+_dSectionCollapse('4');
+-->
+</script>
+
+
+</td>
+<td colspan=5><div id="cSec5"><a onclick="return _dSectionExpand('5');"><img src="images/expand.gif" border="0" alt="Show details for PBN">
+<tt onmouseover="DisplayTip(this,0,50,
+'PBN/ Indication of RNAV and/or RNP capabilities.<br>Include as many of the descriptors below, as apply to the flight, <br>up to a maximum of 8 entries, i.e. a total of not mare than 16 characters')">
+<b>PBN/</b></tt></div>
+<div id="xSec5"><a onclick="return _dSectionCollapse('5');">
+<img src="images/collapse.gif" border="0" alt="Hide details for PBN"><b><font color="#800000"><tt onmouseover="DisplayTip(this,0,50,
+'PBN/ Indication of RNAV and/or RNP capabilities.<br>Include as many of the descriptors below, as apply to the flight, <br>up to a maximum of 8 entries, i.e. a total of not mare than 16 characters')">
+<b>PBN/</b></tt></a>
+<table>
+<tr>
+<td align="left"><font size="2">
+<input name="%%Surrogate_PBN" type="hidden" value="1">
+	<input type="checkbox" name="PBN" value="A1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">A1-RNAV 10 (RNP 10)<br>
+	<input type="checkbox" name="PBN" value="B1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B1-RNAV 5 all permitted sensors<br>
+	<input type="checkbox" name="PBN" value="B2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B2-RNAV 5 GNSS<BR>	
+	<input type="checkbox" name="PBN" value="B3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B3-RNAV 5 DME/DME<br>
+	<input type="checkbox" name="PBN" value="B4" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B4-RNAV 5 VOR/DME<br>
+	<input type="checkbox" name="PBN" value="B5" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B5-RNAV 5 INS or IRS<BR>
+	<input type="checkbox" name="PBN" value="B6" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">B6-RNAV 5 LORANC<br>
+	<input type="checkbox" name="PBN" value="C1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">C1-RNAV 2 all permitted sensors<br>
+	<input type="checkbox" name="PBN" value="C2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">C2-RNAV 2 GNSS<BR>
+	<input type="checkbox" name="PBN" value="C3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">C3-RNAV 2 DME/DME<br>
+	<input type="checkbox" name="PBN" value="C4" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">C4-RNAV 2 DME/DME/IRU<br>
+	<input type="checkbox" name="PBN" value="D1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">D1-RNAV 1 all permitted sensors<BR>
+	<input type="checkbox" name="PBN" value="D2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">D2-RNAV 1 GNSS<br>
+        <input type="checkbox" name="PBN" value="D3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">D3-RNAV 1 DME/DME<br>
+	<input type="checkbox" name="PBN" value="D4" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">D4-RNAV 1 DME/DME/IRU<BR>
+	<input type="checkbox" name="PBN" value="L1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">L1-RNP 4<br>
+	<input type="checkbox" name="PBN" value="O1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">O1-Basic RNP 1 all permitted sensors<br>
+	<input type="checkbox" name="PBN" value="O2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">O2-Basic RNP 1 GNSS<BR>
+	<input type="checkbox" name="PBN" value="O3" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">O3-Basic RNP 1 DME/DME<br>
+	<input type="checkbox" name="PBN" value="O4" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">O4-Basic RNP 1 DME/DME/IRU<br>
+	<input type="checkbox" name="PBN" value="S1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">S1-RNP APCH<BR>
+	<input type="checkbox" name="PBN" value="S2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">S2-RNP APCH with BARO-VNAV<br>
+	<input type="checkbox" name="PBN" value="T1" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">T1-RNP AR APCH with RF (special authorization required)<BR>
+	<input type="checkbox" name="PBN" value="T2" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">T2-RNP AR APCH without RF (special authorization required)<br>
+</FONT></td>
+</tr>
+</table>
+</td>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+//_dSectionExpand('3');
+_dSectionCollapse('5');
+-->
+</script>
+
+</td>
+</tr>
+<tr>
+<td>
+<tt
+onmouseover="DisplayTip(this,0,50,
+'NAV/ Significant data related to navigation equipment, other than specified in PBN/, <br>as required by the appropiate ATS authority.<br>Indicate GNSS augmentation under this indicator, with a space between two ore more<br>methots of augmentation, e.g. NAV/GBAS SBAS.')">
+<b>NAV/</b></tt>
+</td>
+<td>
+<input name="NAV" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td width="7%"><div align="left">
+<tt onmouseover="DisplayTip(this,0,50,'COM/ Indicate communications applications or capabilities not specified in item 10a.')">
+<b>COM/</b></tt></td>
+<td>
+<input name="COM" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();this.value=removegarbage(this.value,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;);this.style.background=''" onfocus="this.style.background='#FFFF00'">
+</td>
+</tr>
+<td ><div align="left">
+<tt onmouseover="DisplayTip(this,0,50,'DAT/ Indicate data applications or capabilities not specified in 10a.')">
+<b>DAT/</b></tt></div></td>
+<td width="11%">
+<input name="DATZ" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td ><div align="left">
+<tt onmouseover="DisplayTip(this,0,50,'SUR/ Include surveillance applications or capabilities<br>not specified in Item 10b.')">
+<b>SUR/</b></tt></div></td>
+<td width="11%">
+<input name="SUR" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+</tr>
+<tr valign="top">
+<td bgcolor="#FFC0CE"><tt onmouseover="DisplayTip(this,0,50,
+'DEP/ Name and location of departure aerodrome, if ZZZZ is insered in Item 13 <br>or the ATS unit from which supplementary flight plan data can be obtined,<br>if AFIL is insered in ITEM 13.<br>For aerodromes not listed in the relevant Aeronautical Information Publication, indicate location as follows:<br>With 4 figures describing latitude in degrees and tens and units of minutes<br>followed by N (North) or S (South), followed by 5 figures describing longitude in degrees and tens and units of minutes,<br>followed by E (East) or W (West). Make up the correct number of figures, where neccesary, by insertions of zeros, e.g. 4620N07805W (11 characters).<br>OR<br>Bearing and distance from nearest significant point, as follows:<br>The identification of the significant point followed by the bearing from the point in the form of<br>3 figures giving degrees magnetic, followed by the distance from the point in the form of 3 figures expressing nautical miles.<br>in areas of high latitude where it is determinated by the appropiate authority that reference to degrees magnetic is impractical, degrees true may be used<br>Make up the correct number of figures, where necessary, by insertion of zeros, e.g. a point of 180 magnetic at the distance of 40 nautical miles from VOR - DUB should be expressed as DUB180040.<br>OR<br>The first point of the route (name or LAT/LONG) or the marker rdio beacon, if the aircraft has not taken off from an aerodrome.')">
+<b><font color="#800000">DEP/</font></b></tt></td>
+<td bgcolor="#FFC0CE" >
+<input name="DEPZ" value="" SIZE=20 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ &quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'">
+</td>
+<td bgcolor="#FFC0CE"><div align="left"><tt
+onmouseover="DisplayTip(this,0,50,
+'DEST/ Name and location of destination aerodrome, if ZZZZ is insereted in ITEM 16.<br>Foe aerodromes not listed in the relevant Aeronautical Information Publication, indicate location in LAT/LONG or bearing and distance<br>from the nearest significant point, as described under DEP/above.')">
+<b><font color="#800000">DEST/</font></b></tt></div></td>
+<td bgcolor="#FFC0CE"><input name="DESTZ" value="" SIZE=20 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ &quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'">
+</td>
+</tr>
+<tr valign="top"><td><tt
+onmouseover="DisplayTip(this,0,50,'DOF/ The datet of departure in a siz figure format (YYMMDD),<br>where YY equals the year, MM eguals the month and DD equals the day.')">
+<b>DOF/</b></tt></td>
+<td>
+<input name="IOBD" value="" SIZE=8 MAXLENGTH=6 size=16 onblur="this.value =removegarbage(this.value ,&quot;1234567890&quot;);var a=this.value;var cnt=&quot;IOBD&quot;;var err=false;
+this.style.background=''" onfocus="this.style.background='#FFFF00'">
+<input type="button" onclick="today = new Date();day = today.getDate();year = today.getYear() ;month = today.getMonth()+1 ;y=year.toString();m=&quot;0&quot;+month.toString();d=&quot;0&quot;+day.toString();
+IOBD.value=y.substr(y.length-2,2)+m.substring(m.length-2,m.length)+d.substring(d.length-2,d.length);" value="Auto"></td>
+<td>
+<tt onmouseover="DisplayTip(this,0,50,'REG/ The nationality or common mark and registration mark of the aircraft,<br>if different from the aircraft identification in Item 7')"><b>REG/</b></tt></td>
+<td>
+<input name="REG" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ/&quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'">
+</td>
+</tr>
+<tr>
+<td>
+<tt onmouseover="DisplayTip(this,0,50,'EET/ Significant points or FIR boundary designator and accumulated estemated elapsed times from take-off to such points<br>or FIR biundaries, when so prescribed on the basis of regional air navigation agreements,<br>or by appropiate ATS authority.')">
+<b>EET/</b></tt>
+</td>
+<td colspan="5">
+<input name="EET" value="" ROWS=2 COLS=128 SIZE=100  onblur="var a=this.value;
+a = a.toUpperCase();
+this.value =removegarbage(a ,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890/ &quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'">
+</td>
+</tr>
+<tr valign="top">
+<td ><tt onmouseover="DisplayTip(this,0,50,'SEL/ SELCAL Code, for aircraft so equipped')">
+<b>SEL/</b></tt>
+</td>
+<td>
+<input name="SEL" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'">
+</td>
+<td>
+<div align="left"><tt onmouseover="DisplayTip(this,0,50,'TYP/ Type(s) of aircraft, preceded if necessary without a space by number(s) of aircraft and<br>separated by one space, if ZZZZ is inserted in Item 9.')">
+<b>TYP/</b></tt></div></td>
+<td width="16%">
+<input name="TYPZ" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td >
+<div align="left">
+<tt onmouseover="DisplayTip(this,0,50,'CODE/ Aircraft address (expressed in the form of an <br>alphanumerical code of six hexadecimal characters) <br>when required by the appropriate ATS authority')">
+<b>CODE/</b>
+</tt></div></td>
+<td >
+<input name="SSRCODE" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+</tr>
+<tr>
+<td >
+<div align="left">
+<tt onmouseover="DisplayTip(this,0,50,'DLE/ Enroute delay or holding, insert the significant point(s) on the route <br>where a delay is planned to occur, followed by the lenght <br>of the delay using four figure time in hours and minutes (hhmm).')">
+<b>DLE/</b>
+</tt></div>
+</td>
+<td >
+<input name="DLE" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td >
+<div align="left">
+<tt onmouseover="DisplayTip(this,0,50,'OPR/ ICAO designator or name of the aircraft operating agency<br>if different from the aircraft identification in Item 7.')">
+<b>OPR/</b></tt></div>
+</td>
+<td >
+<input name="OPR" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+
+<td >
+<div align="left">
+<tt onmouseover="DisplayTip(this,0,50,'ORGN/ The originator's 8 letter AFTN address or other appropiate contact details <br>in cases where the originator of the fight plan may not<br>be readily identified, as required by the appropiate ATS authority.')">
+<b>ORGN/</b>
+</tt></div>
+</td>
+<td >
+<input name="ORGN" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+</tr>
+
+
+<tr valign="top"><td ><tt onmouseover="DisplayTip(this,0,50,'PER/ Aircraft performance data, indicated by a single lette  as specified in the Procedures for <br>Air Navigation Services - Aircraft Operations (PANS-OPS, Doc 8168), Volume I - Flight Procedures,<br>if so prescribed by the appropiate ATS authority. ')">
+<b>PER/</b></tt></td><td>
+<input name="PER" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td>&nbsp</td>
+<td>&nbsp</td>
+<td>&nbsp</td>
+<td>&nbsp</td>
+
+
+</tr>
+<tr>
+<td  bgcolor="#FFC0CE"><div align="left"><tt
+onmouseover="DisplayTip(this,0,50,'ALTN/ Name of destination alternate aerodrome(s), if ZZZZ is inserted in Item 16.<br>For aerodromes not listed in the relevant Aeronautical Information Publication,<br>indicate location in LAT/LONG or bearing and distance from the nearest significant point,<br>as described in DEP/ above.')">
+<b><font color="#800000">ALTN/</font></b></tt></div></td><td  bgcolor="#FFC0CE" >
+<input name="ALTNZ" value="" SIZE=20 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ &quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+
+<td  bgcolor="#FFC0CE"><div align="LEFT"><tt
+onmouseover="DisplayTip(this,0,50,
+'RALTN/ ICAO four letter indicator(s) for en-route alternate(s)<br>as specified in Doc 7910, Location Indicators, or name(s) of en-route<br>alternate aerodrome(s), if no indicator is allocated.<br>For aerodromes not listed in the relevant Aeronautical Information Publication,<br>indicate location in LAT/LONG or bearing and distance from nearest significant point<br>as described in DEP/ above.')">
+<b><font color="#800000">RALTN/</font></b></tt></div></td>
+<td  bgcolor="#FFC0CE" >
+<input name="RALTN" value="" SIZE=20 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ &quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td  bgcolor="#FFC0CE"><div align="left"><tt
+onmouseover="DisplayTip(this,0,50,
+'TALT/ ICAO four letter indicator(s) for take-off alternate<br>as specified in Doc 7910, Location Indicators, or name of take-off<br>alternate aerodrome, if no indicator is allocated.<br>For aerodromes not listed in the relevant Aeronautical Information Publication,<br>indicate location in LAT/LONG or bearing and distance from nearest significant point<br>as described in DEP/ above.')">
+<b><font color="#800000">TALT/</font></b></tt></div></td><td bgcolor="#FFC0CE" >
+<input name="TALT" value="" SIZE=20 onblur="this.value = this.value.toUpperCase();
+this.value=removegarbage(this.value,&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ &quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+
+
+</tr>
+
+<td ><div align="left"><tt
+onmouseover="DisplayTip(this,0,50,
+'RIF/ The route details to the revised destination aerodrome, following by the ICAO four-letter<br>location indicator of the aerodrome. The revised route is subject to reclearance in flight.<br>Examples: RIF/DTA HEC KLAX<br>RIF/ESP G94 CLA YPPH')">
+<b>RIF/</b></tt></div></td><td  >
+<input name="RIF" value="" SIZE=16 onblur="this.value = this.value.toUpperCase();
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+</tr>
+
+<tr valign="top"><td ><tt
+onmouseover="DisplayTip(this,0,50,
+'RMK/ Any other plain language remarks when required by the appropriate ATS authority or deemed necessary.')">
+<b>RMK/</b></tt><br>
+<tt><b><font color="#0000ff"></td>
+<td colspan=4>
+<textarea name="RMK" value=""COLS=80 ROWS=3 onblur="var a= this.value.toUpperCase();
+this.value=removegarbage(a,&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890/ =&quot; + &quot;\n&quot;)
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></textarea>
+</font></b></tt><tt><b><font color="#0000FF">)&lt;&lt;=</font></b></tt></td>
+</tr>
+</table>
+</td></tr>
+</table>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+_dSectionExpand('1');
+-->
+</script>
+
+
+
+<div id="cSec2"><a onclick="return _dSectionExpand('2');"><img src="images/expand.gif" border="0" alt="Show details for 19 SUPPLEMENTARY DATA">
+<tt onmouseover="DisplayTip(this,0,50,
+'Supplementary data')"
+><b><font color="#800000">19 SUPPLEMENTARY DATA</font></b></tt></a></div>
+<div id="xSec2"><a onclick="return _dSectionCollapse('2');"><img src="images/collapse.gif" border="0" alt="Hide details for 19 SUPPLEMENTARY DATA"><tt onmouseover="DisplayTip(this,0,50,
+'Supplementary data')"
+><b><font color="#800000">19 SUPPLEMENTARY DATA</font></b></tt></a><br>
+<br>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr valign="top">
+<td width="25%" bgcolor="#E0FFFF"><tt
+onmouseover="DisplayTip(this,0,50,
+'Insert a 4 figure group giving the fuel endurance in hours and minutes.')"
+><b><font size="2">ENDURANCE</font></b></tt></td>
+<td width="25%" bgcolor="#E0FFFF"><tt
+onmouseover="DisplayTip(this,0,50,
+'Insert the total number of persons ( passengers and crew ) on board, when required by the appropriate ATS authority. <br>Insert TBN (to be notified) if the total number of persons is not known when filing.')"
+><b><font size="2">PERSONS ON BOARD</font></b></tt></td>
+<td width="25%" bgcolor="#E0FFFF"><tt
+onmouseover="DisplayTip(this,0,50,
+' Radio<br>* cross out U if UHF on frequency 243.0 MHz is NOT carried<br>* cross out V if VHF on frequency 121.5 MHz is NOT carried<br>* cross out E if emergency location beacon - aircraft (ELBA) is NOT available')"
+><b><font size="2">EMERGENCY RADIO</font></b></tt></td>
+<td width="25%" bgcolor="#E0FFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+
+<tr valign="top">
+<td width="25%" bgcolor="#E0FFFF"><b>E/</b><input name="ENDURANCE" value="" SIZE=5 onblur="this.value =removegarbage(this.value ,&quot;1234567890:&quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td width="25%" bgcolor="#E0FFFF"><b>P/</b><input name="PERSONBOARD" value="" SIZE=5 MAXLENGTH=3 onblur="this.value =removegarbage(this.value ,&quot;1234567890&quot;);
+this.style.background=''" onfocus="this.style.background='#FFFF00'"></td>
+<td width="25%" bgcolor="#E0FFFF"><b>R/</b>
+	<input name="%%Surrogate_UHF" type="hidden" value="1">
+	<input type="checkbox" name="UHF" value="U" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">UHF
+	<input type="checkbox" name="UHF" value="V" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">VHF
+	<input type="checkbox" name="UHT" value="E" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">ELT</td>
+<td width="25%" bgcolor="#E0FFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+
+<tr valign="top">
+<td width="25%" bgcolor="#C2EFFF"><tt
+onmouseover="DisplayTip(this,0,50,
+' Survival Equipment<br>* cross out all indications of survival equipment is carried<br>* cross out P if polar survival equipment is carried<br>* cross out D if desert survival equipment is carried<br>* cross out M if maritime survival equipment is carried.<br>Note: this refers to equipment in addition to the lifejackets in the following section<br>* cross out J if jungle survival equipment is carried.
+')"
+><b><font size="2">SURVIVAL EQUIPMENT</font></b></tt></td>
+<td width="25%" bgcolor="#C2EFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+<td width="25%" bgcolor="#C2EFFF"><tt
+onmouseover="DisplayTip(this,0,50,
+'Jackets<br>* cross out all indicators if lifejackets are carried<br>* cross out L if lifejackets are fitted with lights<br>* cross out F if jackets are equipped with fluoroscein<br>* cross out U of V or both as in R/ above to indicate radio capability of jackets, if any
+')"
+><b><font size="2">JACKETS</font></b></tt></td>
+<td width="25%" bgcolor="#C2EFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+
+<tr valign="top">
+<td width="50%" bgcolor="#C2EFFF" colspan="2"><b><font size="2">S/</font></b><font size="2">
+	<input name="%%Surrogate_SURV_EQPT" type="hidden" value="1">
+	<input type="checkbox" name="SURV_EQPT" value="P">POLAR
+	<input type="checkbox" name="SURV_EQPT" value="D">DESERT
+	<input type="checkbox" name="SURV_EQPT" value="M">MARITIME
+	<input type="checkbox" name="SURV_EQPT" value="J">JUNGLE</font></td>
+<td width="50%" bgcolor="#C2EFFF" colspan="2"><b><font size="2">J/</font></b><font size="2">
+	<input name="%%Surrogate_JACKETS" type="hidden" value="1">
+	<input type="checkbox" name="JACKETS" value="L">LIGHT
+	<input type="checkbox" name="JACKETS" value="F">FLUORES
+	<input type="checkbox" name="JACKETS" value="U">UHF
+	<input type="checkbox" name="JACKETS" value="V">VHF</font></td>
+</tr>
+<tr valign="top"><th colspan="4" ><font size="2" color="red"><h3>Cross items which are NOT available!</h3></font></th></tr>
+<tr valign="top">
+<td width="25%" bgcolor="#E0FFFF"><tt
+onmouseover="DisplayTip(this,0,50,
+' Dinghies/Number cross out indicators Dinghies and Cover if dinghies are carried,  <br>and insert number of dinghies carried and;<br>* (CAPACITY) insert total capacity, in persons, of all dinghied carried, and<br>* (COVER) cross out indicator Cover if dinghies are not covered and<br>* (COLOUR) insert colour of dinghies if carried.<br>')"
+><b><font size="2">DINGHIES</font></b></tt></td>
+<td width="25%" bgcolor="#E0FFFF"><tt><b><font size="2">CAPACITY</font></b></tt></td>
+<td width="25%" bgcolor="#E0FFFF"><tt><b><font size="2">COVER COLOUR</font></b></tt></td>
+<td width="25%" bgcolor="#E0FFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+
+<tr valign="top">
+<td width="25%" bgcolor="#E0FFFF"><b>D/</b>
+	<input name="DINGHIES" value="" SIZE=3 MAXLENGTH=2 onfocus="this.style.background='#FFFF00'" onblur="this.style.background='';this.value = this.value.toUpperCase()"></td>
+<td width="25%" bgcolor="#E0FFFF">
+	<input name="DINGH_CAPACITY" value="" SIZE=4 MAXLENGTH=3 onblur="this.style.background='';this.value = this.value.toUpperCase()" onfocus="this.style.background='#FFFF00'"></td>
+<td width="25%" bgcolor="#E0FFFF"><b>C </b>
+	<input name="DINGH_COLOUR" value="" onfocus="this.style.background='#FFFF00'" onblur="this.style.background='';this.value = this.value.toUpperCase()"></td>
+<td width="25%" bgcolor="#E0FFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+
+<tr valign="top">
+<td width="25%" bgcolor="#C2EFFF"><tt
+onmouseover="DisplayTip(this,0,50,
+'(AIRCRAFT COLOUR AND MARKINGS) insert colour of aircraft and significant  markings ')"
+><b><font size="2">ACFT COLOUR AND MARKINGS</font></b></td>
+<td width="25%" bgcolor="#C2EFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+<td width="25%" bgcolor="#C2EFFF"><tt
+onmouseover="DisplayTip(this,0,50,'(REMARKS) Indicate any other survival equipment carried and any other remarks  regarding survival equipment. ')"
+><b><font size="2">REMARKS</font></b></td>
+<td width="25%" bgcolor="#C2EFFF"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+
+<tr valign="top">
+<td width="50%" bgcolor="#C2EFFF" colspan="2"><b>A/</b>
+	<input name="ACFT_COLOUR" value="" SIZE=75 onblur="this.style.background='';this.value = this.value.toUpperCase()" onfocus="this.style.background='#FFFF00'"></td>
+<td width="50%" bgcolor="#C2EFFF" colspan="2"><b>N/</b>
+	<input name="REMARKS" value="" SIZE=32 onfocus="this.style.background='#FFFF00'" onblur="this.style.background='';this.value = this.value.toUpperCase()"></td>
+</tr>
+
+<tr valign="top">
+<td width="50%" bgcolor="#C2FF91" colspan="2"><tt
+onmouseover="DisplayTip(this,0,50,
+'(PILOT) insert name of pilot in command')"
+><b><font size="2">PILOT IN COMMAND</font></b></tt></td>
+<td width="25%" bgcolor="#C2FF91"><tt
+onmouseover="DisplayTip(this,0,50,'Add a telephone number')"
+><b><font size="2">PERSONAL MOBILE PHONE</font></b></td>
+<td width="25%" bgcolor="#C2FF91"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+
+<tr valign="top">
+<td width="25%" bgcolor="#C2FF91"><b><font color="#0000FF">C/</font></b></tt><b><font color="#0000ff">
+	<input name="PIC" value="Dorinel CROITOR" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'"></font></b><b><font color="#0000FF">)</font></b></td>
+<td width="25%" bgcolor="#C2FF91"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td><td width="25%" bgcolor="#C2FF91">
+	<input name="PILOT_PHONE" value="0744613040" onfocus="this.style.background='#FFFF00'" onblur="this.value=removegarbage(this.value,&quot;+0123456789 -&quot;);
+this.style.background=''"></td>
+<td width="25%" bgcolor="#C2FF91"><img width="1" height="1" src="images/ecblank.gif" border="0" alt=""></td>
+</tr>
+</table>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+_dSectionExpand('2');
+// -->
+</script>
+
+<br>
+<b>Pre-flight Information Bulletin</b><br>
+I want to receive PIB 
+<input name="%%Surrogate_PibRequest" type="hidden" value="1">
+<select name="PibRequest" value="" onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'">
+<option selected>Yes
+<option>No</select>
+ at email 
+<input name="email" value="dorincroitor@yahoo.com" ROWS=1 COLS=80 onfocus="this.style.background='#FFFF00'" onblur="this.style.background=''"><div align="center"></div>
+<INPUT NAME="Body" TYPE=hidden VALUE="">
+<INPUT NAME="WSTATUS" TYPE=hidden VALUE="">
+
+<table width="100%" border="1">
+<tr valign="top"><td width="100%" bgcolor="#7FFF7F"><div align="center"><b>STATUS:</b><b><font color="#0000FF">NEW</font></b></div></td></tr>
+
+<tr valign="top"><td width="100%" bgcolor="#FFFFFF">CREATED ON:
+<font color="#0000FF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+<!-- This script and many more are available free online at -->
+<!-- The JavaScript Source!! http://javascript.internet.com -->
+
+<!-- Begin
+document.write(Date()+".");
+// End -->
+</SCRIPT>
+</font></td></tr>
+
+<tr valign="top"><td width="100%" bgcolor="#F7F7F7">Comments for ARO: <br>
+<font color="#ff0000">
+<textarea name="Comments" ROWS=4 COLS=70 MAXSIZE=256 onblur="this.style.background=''" onfocus="this.style.background='#FFFF00'"></textarea>
+</font></td></tr>
+</table>
+<CENTER><input type="submit" name="submit" value="Submit to ARO" onclick="return test();"></CENTER>
+
+</form>
+</body>
+</html>
