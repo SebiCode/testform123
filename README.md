@@ -1,6 +1,4 @@
-# testform123
-
-**Here are the major links**
+# **Here are the major links**
 
 **Kanban project:** *https://github.com/SebiCode/testform123/projects/1*
 
