@@ -11,3 +11,5 @@ Useful frameworks:
 1. [SparkUIKit](https://github.com/rebeloper/SparkUI)
 2. [ReactiveKit](https://github.com/DeclarativeHub/ReactiveKit)
 3. [Bond](https://github.com/DeclarativeHub/Bond)
+
+*If you want to have an AppDelegate, specify in the project creation process this*
